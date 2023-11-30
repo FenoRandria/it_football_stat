@@ -886,7 +886,7 @@ SELECT
   sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
   sum(CASE WHEN action = 'Tacles' THEN points END) AS tacles,
   sum(CASE WHEN action = 'Interceptions' THEN points END) AS interceptions,
-  sum(CASE WHEN action = 'Fautes subies' THEN points END) AS fautes,
+  sum(CASE WHEN action = 'Fautes' THEN points END) AS fautes,
   round(sum(CASE WHEN action = 'Hors-jeux' THEN points  END)/count(DISTINCT id_match),2) AS horsJeux,
   round(sum(points)/count(action),2) AS notes
 FROM (

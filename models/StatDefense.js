@@ -16,7 +16,7 @@ class StatDefense {
     async getAll() {
         try {
             const result = await db.query('select * from v_statdefense');
-            const joueurs = result.rows.map((row) => new StatDefense(row.equipe,row.competition,row.tirs, row.tacles, row.interceptions, row.fautes, row.horsJeux,row.notes));
+            const joueurs = result.rows.map((row) => new StatDefense(row.equipe,row.competition,row.tirs, row.tacles, row.interceptions, row.fautes, row.horsjeux,row.notes));
             return joueurs;
         } catch (error) {
             console.error('Erreur lors de la récupération des statDefense :', error);
