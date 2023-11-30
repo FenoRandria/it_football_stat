@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const Joueur = require('../models/Joueur');
 // Créer une nouvelle Cup ----------------------------------------------------------------------------------
 // router.post('/create-etudiant', async (req, res) => {
 //   const { nom } = req.body;
@@ -15,17 +15,34 @@ const router = express.Router();
 
 // Obtenir toutes les Cups ----------------------------------------------------------------------------------
 router.get('/all', async (req, res) => {
-//   const etudiant = new Etudiant();
+  // const joueur = new Joueur();
   try {
-    // const etudiants = await etudiant.getAll();
+    // const joueurs = await joueur.getAll();
     const etudiants = {
         "id":"1",
         "nom":"feno",
         "dtn":"2022-12-23"
     }
     res.json(etudiants);
+    // res.json(joueurs);
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de la récupération des etudiants.' });
+    res.status(500).json({ error: 'Erreur lors de la récupération des joueurs.' });
+  }
+});
+
+router.get('/joueurs', async (req, res) => {
+  const joueur = new Joueur();
+  try {
+    const joueurs = await joueur.getAll();
+    // const etudiants = {
+    //     "id":"1",
+    //     "nom":"feno",
+    //     "dtn":"2022-12-23"
+    // }
+    // res.json(etudiants);
+    res.json(joueurs);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des joueurs.' });
   }
 });
 
