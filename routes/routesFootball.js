@@ -14,7 +14,7 @@ const router = express.Router();
 // });
 
 // Obtenir toutes les Cups ----------------------------------------------------------------------------------
-router.get('/all-etudiant', async (req, res) => {
+router.get('/all', async (req, res) => {
 //   const etudiant = new Etudiant();
   try {
     // const etudiants = await etudiant.getAll();
