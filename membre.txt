@@ -1,3 +1,13 @@
 Feno 2191
 Hariaja 2232
 Nandrianina 2201
+
+site id : 3b72f165-dbc8-4992-8c28-38dc33c0e3b0
+status badge : [![Netlify Status](https://api.netlify.com/api/v1/badges/3b72f165-dbc8-4992-8c28-38dc33c0e3b0/deploy-status)](https://app.netlify.com/sites/footballstat/deploys)
+
+
+db server : berry.db.elephantsql.com (berry-01)
+db user : iouoiwgl
+db pwd : hS0-hQ5HzcF5L-KNtVq1imrfs9H2tyQ0
+db url : postgres://iouoiwgl:hS0-hQ5HzcF5L-KNtVq1imrfs9H2tyQ0@berry.db.elephantsql.com/iouoiwgl
+db api key : de8b4147-b9d9-4f38-8c9f-edea6f48fcdb
