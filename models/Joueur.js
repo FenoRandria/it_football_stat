@@ -11,7 +11,7 @@ class Joueur {
 
   async getAll() {
     try {
-      const result = await db.query('select * from etudiant where corbeil != 1');
+      const result = await db.query('select * from student where corbeil != 1');
       const joueurs = result.rows.map((row) => new Joueur(row.id, row.nom, row.etu, row.dtn, row.corbeil));
       return joueurs;
     } catch (error) {
