@@ -70,10 +70,30 @@ router.get('/statdefenses', async (req, res) => {
   }
 });
 
+router.get('/stat-defenses', async (req, res) => {
+  const statGenerale = new StatDefense();
+  try {
+    const statDefenses = await statGenerale.getAll();
+    res.json(statDefenses);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statdefenses.' });
+  }
+});
+
 router.get('/statattaques', async (req, res) => {
   const statAttaque = new StatAttaque();
   try {
     const statAttaques = await statAttaque.getStatAttaque();
+    res.json(statAttaques);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statAttaques.' });
+  }
+});
+
+router.get('/stat-attaques', async (req, res) => {
+  const statAttaque = new StatAttaque();
+  try {
+    const statAttaques = await statAttaque.getAll();
     res.json(statAttaques);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération des statAttaques.' });

@@ -24,6 +24,15 @@ VALUES
   ('Premier League');
 
 -- ----------------------------------------------------------------------------------------------------------------
+-- Compétitions
+INSERT INTO competition (nom)
+VALUES
+  ('Ligue 1'),
+  ('La Liga'),
+  ('Bundesliga'),
+  ('Premier League');
+
+-- ----------------------------------------------------------------------------------------------------------------
 create table equipe(
     id_equipe serial not null primary key,
     nom varchar(255),
@@ -869,18 +878,17 @@ ORDER BY sum(points) DESC;
 
 
 -- -------------- stat defense -------------------
-create or replace view v_statgenerale as
+-- row.equipe,row.competition,row.tirs, row.tacles, row.interceptions, row.fautes, row.horsJeux,row.notes
+create or replace view v_statdefense as
 SELECT
   equipe,
   competition_nom competition,
   partie,
-  sum(CASE WHEN action = 'Buts' THEN points END) AS buts,
   sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
-  sum(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
-  sum(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
-  round(sum(CASE WHEN action = 'Possession%' THEN points  END)/count(DISTINCT id_match),2) AS possession,
-  round(sum(CASE WHEN action = 'PassesRéussies%' THEN points END)/count(DISTINCT id_match),2)  AS passes_reussies,
-  round(sum(CASE WHEN action = 'AériensGagnés' THEN points END)/count(DISTINCT id_match),2)  AS aeriens_gagnes,
+  sum(CASE WHEN action = 'Tacles' THEN points END) AS tacles,
+  sum(CASE WHEN action = 'Interceptions' THEN points END) AS interceptions,
+  sum(CASE WHEN action = 'Fautes subies' THEN points END) AS fautes,
+  round(sum(CASE WHEN action = 'Hors-jeux' THEN points  END)/count(DISTINCT id_match),2) AS horsJeux,
   round(sum(points)/count(action),2) AS notes
 FROM (
   SELECT
@@ -891,7 +899,7 @@ FROM (
     action,
     sum(pointEquipe1) AS points
   FROM v_statistique
-  where partie = 10
+  where partie = 30
   GROUP BY id_match, equipe1_nom, partie, action,competition_nom
 
   UNION ALL
@@ -904,7 +912,46 @@ FROM (
     action,
     sum(pointEquipe2) AS points
   FROM v_statistique
-  where partie = 10
+  where partie = 30
+  GROUP BY id_match, equipe2_nom, partie, action,competition_nom
+) AS matches_combined
+GROUP BY equipe, partie,id_match,competition_nom
+ORDER BY sum(points) DESC;
+
+-- ----------------- stat attaque -----------------------
+create or replace view v_statattaque as
+SELECT
+  equipe,
+  competition_nom competition,
+  partie,
+  sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
+  sum(CASE WHEN action = 'Tirs CA' THEN points END) AS tirsca,
+  sum(CASE WHEN action = 'Dribbles' THEN points END) AS dribbles,
+  sum(CASE WHEN action = 'Fautes subies' THEN points END) AS fautes,
+  round(sum(points)/count(action),2) AS notes
+FROM (
+  SELECT
+    equipe1_nom AS equipe,
+    id_match,
+    competition_nom,
+    partie,
+    action,
+    sum(pointEquipe1) AS points
+  FROM v_statistique
+  where partie = 20
+  GROUP BY id_match, equipe1_nom, partie, action,competition_nom
+
+  UNION ALL
+
+  SELECT
+    equipe2_nom AS equipe,
+    id_match,
+    competition_nom,
+    partie,
+    action,
+    sum(pointEquipe2) AS points
+  FROM v_statistique
+  where partie = 20
   GROUP BY id_match, equipe2_nom, partie, action,competition_nom
 ) AS matches_combined
 GROUP BY equipe, partie,id_match,competition_nom

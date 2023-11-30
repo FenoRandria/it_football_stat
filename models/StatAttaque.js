@@ -15,7 +15,7 @@ class StatAttaque {
     async getAll() {
         try {
             const result = await db.query('select * from v_statattaque');
-            const joueurs = result.rows.map((row) => new StatAttaque(row.equipe,row.competition,row.tirs, row.tirsca, row.dribbles, row.fautes,row.note));
+            const joueurs = result.rows.map((row) => new StatAttaque(row.equipe,row.competition,row.tirs, row.tirsca, row.dribbles, row.fautes,row.notes));
             return joueurs;
         } catch (error) {
             console.error('Erreur lors de la récupération des StatAttaque :', error);
