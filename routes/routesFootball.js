@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Joueur = require('../models/Joueur');
-// Créer une nouvelle Cup ----------------------------------------------------------------------------------
+const StatGenerale = require('../models/StatGenerale');
+const StatDefense = require('../models/StatDefense');
+const StatAttaque = require('../models/StatAttaque');
+
+// Créer une nouvelle Joueurs ----------------------------------------------------------------------------------
 // router.post('/create-etudiant', async (req, res) => {
 //   const { nom } = req.body;
 //   const etudiant = new Etudiant();
@@ -15,16 +19,13 @@ const Joueur = require('../models/Joueur');
 
 // Obtenir toutes les Cups ----------------------------------------------------------------------------------
 router.get('/all', async (req, res) => {
-  // const joueur = new Joueur();
   try {
-    // const joueurs = await joueur.getAll();
     const etudiants = {
         "id":"1",
         "nom":"feno",
         "dtn":"2022-12-23"
     }
     res.json(etudiants);
-    // res.json(joueurs);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération des joueurs.' });
   }
@@ -34,15 +35,39 @@ router.get('/joueurs', async (req, res) => {
   const joueur = new Joueur();
   try {
     const joueurs = await joueur.getAll();
-    // const etudiants = {
-    //     "id":"1",
-    //     "nom":"feno",
-    //     "dtn":"2022-12-23"
-    // }
-    // res.json(etudiants);
     res.json(joueurs);
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de la récupération des joueurs.' });
+  }
+});
+
+router.get('/statgenerales', async (req, res) => {
+  const statGenerale = new StatGenerale();
+  try {
+    const statGenerales = await statGenerale.getStatGenerale();
+    res.json(statGenerales);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statGenerales.' });
+  }
+});
+
+router.get('/statdefenses', async (req, res) => {
+  const statGenerale = new StatDefense();
+  try {
+    const statDefenses = await statGenerale.getStatDefense();
+    res.json(statDefenses);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statdefenses.' });
+  }
+});
+
+router.get('/statattaques', async (req, res) => {
+  const statAttaque = new StatAttaque();
+  try {
+    const statAttaques = await statAttaque.getStatAttaque();
+    res.json(statAttaques);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statAttaques.' });
   }
 });
 
