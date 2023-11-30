@@ -16,10 +16,22 @@ class StatGenerale {
     }
     
       async getAll() {
+        var a = 0;
+        if(db==null)
+        {
+          a = 1;
+        }
         try {
-          const result = await db.query('select * from v_statgenerale');
-          const joueurs = result.rows.map((row) => new StatGenerale(row.equipe, row.competition, row.buts, row.tirs, row.jaune, row.rouge, row.possession, row.passes_reussies, row.aeriens_gagnes, row.notes));
-          return joueurs;
+          if (a==1) {
+            const joueurs = await this.getStatGenerale();
+            return joueurs;
+          }else{
+
+            const result = await db.query('select * from v_statgenerale');
+            console.table(result);
+            const joueurs = result.rows.map((row) => new StatGenerale(row.equipe, row.competition, row.buts, row.tirs, row.jaune, row.rouge, row.possession, row.passes_reussies, row.aeriens_gagnes, row.notes));
+            return joueurs;
+          }
         } catch (error) {
           console.error('Erreur lors de la récupération des statgenerale :', error);
           throw error;

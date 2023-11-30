@@ -1,11 +1,17 @@
 create database footballstat;
 \c footballstat;
 
-create table competition(
-    id_compet serial not null primary key,
-    nom varchar(255),
-    corbeil int default 0
+-- create table competition(
+--     id_compet serial not null primary key,
+--     nom varchar(255),
+--     corbeil int default 0
+-- );
+CREATE TABLE competition (
+    id_compet INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255),
+    corbeil INT DEFAULT 0
 );
+
 -- Compétitions
 INSERT INTO competition (nom)
 VALUES
@@ -33,8 +39,14 @@ VALUES
   ('Premier League');
 
 -- ----------------------------------------------------------------------------------------------------------------
+-- create table equipe(
+--     id_equipe serial not null primary key,
+--     nom varchar(255),
+--     corbeil int default 0
+-- );
+
 create table equipe(
-    id_equipe serial not null primary key,
+    id_equipe int AUTO_INCREMENT not null primary key,
     nom varchar(255),
     corbeil int default 0
 );
@@ -92,9 +104,18 @@ INSERT INTO equipe (nom) VALUES
 
 -- ----------------------------------------------------------------------------------------------------------------
 
+
+-- create table joueur(
+--     id_joueur serial not null primary key,
+--     nom varchar(255) not null,
+--     dtn date,
+--     bonpied int, -- pied gauche 0 et pied droit 1
+--     paysdorigine varchar(255),
+--     corbeil int default 0
+-- );
 
 create table joueur(
-    id_joueur serial not null primary key,
+    id_joueur int AUTO_INCREMENT not null primary key,
     nom varchar(255) not null,
     dtn date,
     bonpied int, -- pied gauche 0 et pied droit 1
@@ -254,8 +275,13 @@ VALUES
 
 -- ----------------------------------------------------------------------------------------------------------------
 
+-- create table post(
+--     id_post serial not null primary key,
+--     nom varchar(255) not null,
+--     corbeil int default 0
+-- );
 create table post(
-    id_post serial not null primary key,
+    id_post int AUTO_INCREMENT not null primary key,
     nom varchar(255) not null,
     corbeil int default 0
 );
@@ -267,8 +293,20 @@ VALUES
   ('Milieu'),
   ('Attaquant');
 -- ----------------------------------------------------------------------------------------------------------------
+-- CREATE TABLE joueurEquipe (
+--     id_jeq SERIAL NOT NULL PRIMARY KEY,
+--     id_joueur INT NOT NULL,
+--     id_equipe INT NOT NULL,
+--     dateEntree DATE,
+--     id_post INT,
+--     corbeil INT DEFAULT 0,
+--     FOREIGN KEY (id_joueur) REFERENCES joueur(id_joueur),
+--     FOREIGN KEY (id_equipe) REFERENCES equipe(id_equipe),
+--     FOREIGN KEY (id_post) REFERENCES post(id_post)
+-- );
+
 CREATE TABLE joueurEquipe (
-    id_jeq SERIAL NOT NULL PRIMARY KEY,
+    id_jeq int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     id_joueur INT NOT NULL,
     id_equipe INT NOT NULL,
     dateEntree DATE,
@@ -343,8 +381,20 @@ VALUES
 (48,12,'2020-10-12',2);
 -- ----------------------------------------------------------------------------------------------------------------
 
-CREATE TABLE match (
-    id_match SERIAL NOT NULL PRIMARY KEY,
+-- CREATE TABLE match (
+--     id_match SERIAL NOT NULL PRIMARY KEY,
+--     date_match DATE,
+--     id_compet INT NOT NULL,
+--     id_equipe1 INT NOT NULL,
+--     id_equipe2 INT NOT NULL,
+--     terrain VARCHAR(255),
+--     corbeil INT DEFAULT 0,
+--     FOREIGN KEY (id_compet) REFERENCES competition(id_compet),
+--     FOREIGN KEY (id_equipe1) REFERENCES equipe(id_equipe),
+--     FOREIGN KEY (id_equipe2) REFERENCES equipe(id_equipe)
+-- );
+CREATE TABLE `match` (
+    id_match INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     date_match DATE,
     id_compet INT NOT NULL,
     id_equipe1 INT NOT NULL,
@@ -357,7 +407,8 @@ CREATE TABLE match (
 );
 
 
-INSERT INTO match (date_match, id_compet, id_equipe1, id_equipe2, terrain)
+
+INSERT INTO `match` (date_match, id_compet, id_equipe1, id_equipe2, terrain)
 VALUES
     -- Compétition 1
     ('2023-12-01', 1, 1, 2, 'Stadium A'),
@@ -386,8 +437,15 @@ VALUES
 
 -- ----------------------------------------------------------------------------------------------------------------
 
+-- create table action(
+--     id_action serial not null primary key,
+--     partie int, -- general 10 - attaquant 20 - defense 30
+--     action varchar(255),
+--     corbeil int default 0
+-- );
+
 create table action(
-    id_action serial not null primary key,
+    id_action int AUTO_INCREMENT not null primary key,
     partie int, -- general 10 - attaquant 20 - defense 30
     action varchar(255),
     corbeil int default 0
@@ -417,8 +475,19 @@ INSERT INTO action (partie, action) VALUES
     -- Buts = 10	Tirs = 10 	Discipline = 10	Possession% = 10 PassesRéussies% = 10 AériensGagnés = 10
 -- ----------------------------------------------------------------------------------------------------------------
 
+-- CREATE TABLE pointParMatch (
+--     id_point serial NOT NULL PRIMARY KEY,
+--     id_match int,
+--     id_action int,
+--     pointEquipe1 int,
+--     pointEquipe2 int,
+--     corbeil int DEFAULT 0,
+--     FOREIGN KEY (id_match) REFERENCES match(id_match),
+--     FOREIGN KEY (id_action) REFERENCES action(id_action)
+-- );
+
 CREATE TABLE pointParMatch (
-    id_point serial NOT NULL PRIMARY KEY,
+    id_point int AUTO_INCREMENT NOT NULL PRIMARY KEY,
     id_match int,
     id_action int,
     pointEquipe1 int,
@@ -428,239 +497,239 @@ CREATE TABLE pointParMatch (
     FOREIGN KEY (id_action) REFERENCES action(id_action)
 );
 
-
 -- Insérer des données dans la table pointParMatch
 -- Insérer des données dans la table pointParMatch avec des valeurs aléatoires
 INSERT INTO pointParMatch (id_match, id_action, pointEquipe1, pointEquipe2)
 VALUES
     -- Match 1
-    (1, 1, floor(random() * 4), floor(random() * 4)),
-    (1, 2, floor(random() * 4), floor(random() * 4)),
-    (1, 3, floor(random() * 4), floor(random() * 4)),
-    (1, 4, floor(random() * 4), floor(random() * 4)),
-    (1, 5, floor(random() * 100), floor(random() * 100)),
-    (1, 6, floor(random() * 100), floor(random() * 100)),
-    (1, 7, floor(random() * 4), floor(random() * 4)),
-    (1, 8, floor(random() * 4), floor(random() * 4)),
-    (1, 9, floor(random() * 4), floor(random() * 4)),
-    (1, 10, floor(random() * 4), floor(random() * 4)),
-    (1, 11, floor(random() * 4), floor(random() * 4)),
-    (1, 12, floor(random() * 4), floor(random() * 4)),
-    (1, 13, floor(random() * 4), floor(random() * 4)),
-    (1, 14, floor(random() * 4), floor(random() * 4)),
-    (1, 15, floor(random() * 4), floor(random() * 4)),
-    (1, 16, floor(random() * 4), floor(random() * 4)),
+    (1, 1, floor(rand() * 4), floor(rand() * 4)),
+    (1, 2, floor(rand() * 4), floor(rand() * 4)),
+    (1, 3, floor(rand() * 4), floor(rand() * 4)),
+    (1, 4, floor(rand() * 4), floor(rand() * 4)),
+    (1, 5, floor(rand() * 60), floor(rand() * 60)),
+    (1, 6, floor(rand() * 60), floor(rand() * 60)),
+    (1, 7, floor(rand() * 4), floor(rand() * 4)),
+    (1, 8, floor(rand() * 4), floor(rand() * 4)),
+    (1, 9, floor(rand() * 4), floor(rand() * 4)),
+    (1, 10, floor(rand() * 4), floor(rand() * 4)),
+    (1, 11, floor(rand() * 4), floor(rand() * 4)),
+    (1, 12, floor(rand() * 4), floor(rand() * 4)),
+    (1, 13, floor(rand() * 4), floor(rand() * 4)),
+    (1, 14, floor(rand() * 4), floor(rand() * 4)),
+    (1, 15, floor(rand() * 4), floor(rand() * 4)),
+    (1, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 2
-    (2, 1, floor(random() * 4), floor(random() * 4)),
-    (2, 2, floor(random() * 4), floor(random() * 4)),
-    (2, 3, floor(random() * 4), floor(random() * 4)),
-    (2, 4, floor(random() * 4), floor(random() * 4)),
-    (2, 5, floor(random() * 100), floor(random() * 100)),
-    (2, 6, floor(random() * 100), floor(random() * 100)),
-    (2, 7, floor(random() * 4), floor(random() * 4)),
-    (2, 8, floor(random() * 4), floor(random() * 4)),
-    (2, 9, floor(random() * 4), floor(random() * 4)),
-    (2, 10, floor(random() * 4), floor(random() * 4)),
-    (2, 11, floor(random() * 4), floor(random() * 4)),
-    (2, 12, floor(random() * 4), floor(random() * 4)),
-    (2, 13, floor(random() * 4), floor(random() * 4)),
-    (2, 14, floor(random() * 4), floor(random() * 4)),
-    (2, 15, floor(random() * 4), floor(random() * 4)),
-    (2, 16, floor(random() * 4), floor(random() * 4)),
+    (2, 1, floor(rand() * 4), floor(rand() * 4)),
+    (2, 2, floor(rand() * 4), floor(rand() * 4)),
+    (2, 3, floor(rand() * 4), floor(rand() * 4)),
+    (2, 4, floor(rand() * 4), floor(rand() * 4)),
+    (2, 5, floor(rand() * 60), floor(rand() * 60)),
+    (2, 6, floor(rand() * 60), floor(rand() * 60)),
+    (2, 7, floor(rand() * 4), floor(rand() * 4)),
+    (2, 8, floor(rand() * 4), floor(rand() * 4)),
+    (2, 9, floor(rand() * 4), floor(rand() * 4)),
+    (2, 10, floor(rand() * 4), floor(rand() * 4)),
+    (2, 11, floor(rand() * 4), floor(rand() * 4)),
+    (2, 12, floor(rand() * 4), floor(rand() * 4)),
+    (2, 13, floor(rand() * 4), floor(rand() * 4)),
+    (2, 14, floor(rand() * 4), floor(rand() * 4)),
+    (2, 15, floor(rand() * 4), floor(rand() * 4)),
+    (2, 16, floor(rand() * 4), floor(rand() * 4)),
 
     -- Match 3
-    (3, 1, floor(random() * 4), floor(random() * 4)),
-    (3, 2, floor(random() * 4), floor(random() * 4)),
-    (3, 3, floor(random() * 4), floor(random() * 4)),
-    (3, 4, floor(random() * 4), floor(random() * 4)),
-    (3, 5, floor(random() * 100), floor(random() * 100)),
-    (3, 6, floor(random() * 100), floor(random() * 100)),
-    (3, 7, floor(random() * 4), floor(random() * 4)),
-    (3, 8, floor(random() * 4), floor(random() * 4)),
-    (3, 9, floor(random() * 4), floor(random() * 4)),
-    (3, 10, floor(random() * 4), floor(random() * 4)),
-    (3, 11, floor(random() * 4), floor(random() * 4)),
-    (3, 12, floor(random() * 4), floor(random() * 4)),
-    (3, 13, floor(random() * 4), floor(random() * 4)),
-    (3, 14, floor(random() * 4), floor(random() * 4)),
-    (3, 15, floor(random() * 4), floor(random() * 4)),
-    (3, 16, floor(random() * 4), floor(random() * 4)),
+    (3, 1, floor(rand() * 4), floor(rand() * 4)),
+    (3, 2, floor(rand() * 4), floor(rand() * 4)),
+    (3, 3, floor(rand() * 4), floor(rand() * 4)),
+    (3, 4, floor(rand() * 4), floor(rand() * 4)),
+    (3, 5, floor(rand() * 60), floor(rand() * 60)),
+    (3, 6, floor(rand() * 60), floor(rand() * 60)),
+    (3, 7, floor(rand() * 4), floor(rand() * 4)),
+    (3, 8, floor(rand() * 4), floor(rand() * 4)),
+    (3, 9, floor(rand() * 4), floor(rand() * 4)),
+    (3, 10, floor(rand() * 4), floor(rand() * 4)),
+    (3, 11, floor(rand() * 4), floor(rand() * 4)),
+    (3, 12, floor(rand() * 4), floor(rand() * 4)),
+    (3, 13, floor(rand() * 4), floor(rand() * 4)),
+    (3, 14, floor(rand() * 4), floor(rand() * 4)),
+    (3, 15, floor(rand() * 4), floor(rand() * 4)),
+    (3, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 4
-    (4, 1, floor(random() * 4), floor(random() * 4)),
-    (4, 2, floor(random() * 4), floor(random() * 4)),
-    (4, 3, floor(random() * 4), floor(random() * 4)),
-    (4, 4, floor(random() * 4), floor(random() * 4)),
-    (4, 5, floor(random() * 100), floor(random() * 100)),
-    (4, 6, floor(random() * 100), floor(random() * 100)),
-    (4, 7, floor(random() * 4), floor(random() * 4)),
-    (4, 8, floor(random() * 4), floor(random() * 4)),
-    (4, 9, floor(random() * 4), floor(random() * 4)),
-    (4, 10, floor(random() * 4), floor(random() * 4)),
-    (4, 11, floor(random() * 4), floor(random() * 4)),
-    (4, 12, floor(random() * 4), floor(random() * 4)),
-    (4, 13, floor(random() * 4), floor(random() * 4)),
-    (4, 14, floor(random() * 4), floor(random() * 4)),
-    (4, 15, floor(random() * 4), floor(random() * 4)),
-    (4, 16, floor(random() * 4), floor(random() * 4)),
+    (4, 1, floor(rand() * 4), floor(rand() * 4)),
+    (4, 2, floor(rand() * 4), floor(rand() * 4)),
+    (4, 3, floor(rand() * 4), floor(rand() * 4)),
+    (4, 4, floor(rand() * 4), floor(rand() * 4)),
+    (4, 5, floor(rand() * 60), floor(rand() * 60)),
+    (4, 6, floor(rand() * 60), floor(rand() * 60)),
+    (4, 7, floor(rand() * 4), floor(rand() * 4)),
+    (4, 8, floor(rand() * 4), floor(rand() * 4)),
+    (4, 9, floor(rand() * 4), floor(rand() * 4)),
+    (4, 10, floor(rand() * 4), floor(rand() * 4)),
+    (4, 11, floor(rand() * 4), floor(rand() * 4)),
+    (4, 12, floor(rand() * 4), floor(rand() * 4)),
+    (4, 13, floor(rand() * 4), floor(rand() * 4)),
+    (4, 14, floor(rand() * 4), floor(rand() * 4)),
+    (4, 15, floor(rand() * 4), floor(rand() * 4)),
+    (4, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 5    
-    (5, 1, floor(random() * 4), floor(random() * 4)),
-    (5, 2, floor(random() * 4), floor(random() * 4)),
-    (5, 3, floor(random() * 4), floor(random() * 4)),
-    (5, 4, floor(random() * 4), floor(random() * 4)),
-    (5, 5, floor(random() * 100), floor(random() * 100)),
-    (5, 6, floor(random() * 100), floor(random() * 100)),
-    (5, 7, floor(random() * 4), floor(random() * 4)),
-    (5, 8, floor(random() * 4), floor(random() * 4)),
-    (5, 9, floor(random() * 4), floor(random() * 4)),
-    (5, 10, floor(random() * 4), floor(random() * 4)),
-    (5, 11, floor(random() * 4), floor(random() * 4)),
-    (5, 12, floor(random() * 4), floor(random() * 4)),
-    (5, 13, floor(random() * 4), floor(random() * 4)),
-    (5, 14, floor(random() * 4), floor(random() * 4)),
-    (5, 15, floor(random() * 4), floor(random() * 4)),
-    (5, 16, floor(random() * 4), floor(random() * 4)),
+    (5, 1, floor(rand() * 4), floor(rand() * 4)),
+    (5, 2, floor(rand() * 4), floor(rand() * 4)),
+    (5, 3, floor(rand() * 4), floor(rand() * 4)),
+    (5, 4, floor(rand() * 4), floor(rand() * 4)),
+    (5, 5, floor(rand() * 60), floor(rand() * 60)),
+    (5, 6, floor(rand() * 60), floor(rand() * 60)),
+    (5, 7, floor(rand() * 4), floor(rand() * 4)),
+    (5, 8, floor(rand() * 4), floor(rand() * 4)),
+    (5, 9, floor(rand() * 4), floor(rand() * 4)),
+    (5, 10, floor(rand() * 4), floor(rand() * 4)),
+    (5, 11, floor(rand() * 4), floor(rand() * 4)),
+    (5, 12, floor(rand() * 4), floor(rand() * 4)),
+    (5, 13, floor(rand() * 4), floor(rand() * 4)),
+    (5, 14, floor(rand() * 4), floor(rand() * 4)),
+    (5, 15, floor(rand() * 4), floor(rand() * 4)),
+    (5, 16, floor(rand() * 4), floor(rand() * 4)),
 
 -- Match 6
-    (6, 1, floor(random() * 4), floor(random() * 4)),
-    (6, 2, floor(random() * 4), floor(random() * 4)),
-    (6, 3, floor(random() * 4), floor(random() * 4)),
-    (6, 4, floor(random() * 4), floor(random() * 4)),
-    (6, 5, floor(random() * 100), floor(random() * 100)),
-    (6, 6, floor(random() * 100), floor(random() * 100)),
-    (6, 7, floor(random() * 4), floor(random() * 4)),
-    (6, 8, floor(random() * 4), floor(random() * 4)),
-    (6, 9, floor(random() * 4), floor(random() * 4)),
-    (6, 10, floor(random() * 4), floor(random() * 4)),
-    (6, 11, floor(random() * 4), floor(random() * 4)),
-    (6, 12, floor(random() * 4), floor(random() * 4)),
-    (6, 13, floor(random() * 4), floor(random() * 4)),
-    (6, 14, floor(random() * 4), floor(random() * 4)),
-    (6, 15, floor(random() * 4), floor(random() * 4)),
-    (6, 16, floor(random() * 4), floor(random() * 4)),
+    (6, 1, floor(rand() * 4), floor(rand() * 4)),
+    (6, 2, floor(rand() * 4), floor(rand() * 4)),
+    (6, 3, floor(rand() * 4), floor(rand() * 4)),
+    (6, 4, floor(rand() * 4), floor(rand() * 4)),
+    (6, 5, floor(rand() * 60), floor(rand() * 60)),
+    (6, 6, floor(rand() * 60), floor(rand() * 60)),
+    (6, 7, floor(rand() * 4), floor(rand() * 4)),
+    (6, 8, floor(rand() * 4), floor(rand() * 4)),
+    (6, 9, floor(rand() * 4), floor(rand() * 4)),
+    (6, 10, floor(rand() * 4), floor(rand() * 4)),
+    (6, 11, floor(rand() * 4), floor(rand() * 4)),
+    (6, 12, floor(rand() * 4), floor(rand() * 4)),
+    (6, 13, floor(rand() * 4), floor(rand() * 4)),
+    (6, 14, floor(rand() * 4), floor(rand() * 4)),
+    (6, 15, floor(rand() * 4), floor(rand() * 4)),
+    (6, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 7
-    (7, 1, floor(random() * 4), floor(random() * 4)),
-    (7, 2, floor(random() * 4), floor(random() * 4)),
-    (7, 3, floor(random() * 4), floor(random() * 4)),
-    (7, 4, floor(random() * 4), floor(random() * 4)),
-    (7, 5, floor(random() * 100), floor(random() * 100)),
-    (7, 6, floor(random() * 100), floor(random() * 100)),
-    (7, 7, floor(random() * 4), floor(random() * 4)),
-    (7, 8, floor(random() * 4), floor(random() * 4)),
-    (7, 9, floor(random() * 4), floor(random() * 4)),
-    (7, 10, floor(random() * 4), floor(random() * 4)),
-    (7, 11, floor(random() * 4), floor(random() * 4)),
-    (7, 12, floor(random() * 4), floor(random() * 4)),
-    (7, 13, floor(random() * 4), floor(random() * 4)),
-    (7, 14, floor(random() * 4), floor(random() * 4)),
-    (7, 15, floor(random() * 4), floor(random() * 4)),
-    (7, 16, floor(random() * 4), floor(random() * 4)),
+    (7, 1, floor(rand() * 4), floor(rand() * 4)),
+    (7, 2, floor(rand() * 4), floor(rand() * 4)),
+    (7, 3, floor(rand() * 4), floor(rand() * 4)),
+    (7, 4, floor(rand() * 4), floor(rand() * 4)),
+    (7, 5, floor(rand() * 60), floor(rand() * 60)),
+    (7, 6, floor(rand() * 60), floor(rand() * 60)),
+    (7, 7, floor(rand() * 4), floor(rand() * 4)),
+    (7, 8, floor(rand() * 4), floor(rand() * 4)),
+    (7, 9, floor(rand() * 4), floor(rand() * 4)),
+    (7, 10, floor(rand() * 4), floor(rand() * 4)),
+    (7, 11, floor(rand() * 4), floor(rand() * 4)),
+    (7, 12, floor(rand() * 4), floor(rand() * 4)),
+    (7, 13, floor(rand() * 4), floor(rand() * 4)),
+    (7, 14, floor(rand() * 4), floor(rand() * 4)),
+    (7, 15, floor(rand() * 4), floor(rand() * 4)),
+    (7, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 8
-    (8, 1, floor(random() * 4), floor(random() * 4)),
-    (8, 2, floor(random() * 4), floor(random() * 4)),
-    (8, 3, floor(random() * 4), floor(random() * 4)),
-    (8, 4, floor(random() * 4), floor(random() * 4)),
-    (8, 5, floor(random() * 100), floor(random() * 100)),
-    (8, 6, floor(random() * 100), floor(random() * 100)),
-    (8, 7, floor(random() * 4), floor(random() * 4)),
-    (8, 8, floor(random() * 4), floor(random() * 4)),
-    (8, 9, floor(random() * 4), floor(random() * 4)),
-    (8, 10, floor(random() * 4), floor(random() * 4)),
-    (8, 11, floor(random() * 4), floor(random() * 4)),
-    (8, 12, floor(random() * 4), floor(random() * 4)),
-    (8, 13, floor(random() * 4), floor(random() * 4)),
-    (8, 14, floor(random() * 4), floor(random() * 4)),
-    (8, 15, floor(random() * 4), floor(random() * 4)),
-    (8, 16, floor(random() * 4), floor(random() * 4)),
+    (8, 1, floor(rand() * 4), floor(rand() * 4)),
+    (8, 2, floor(rand() * 4), floor(rand() * 4)),
+    (8, 3, floor(rand() * 4), floor(rand() * 4)),
+    (8, 4, floor(rand() * 4), floor(rand() * 4)),
+    (8, 5, floor(rand() * 60), floor(rand() * 60)),
+    (8, 6, floor(rand() * 60), floor(rand() * 60)),
+    (8, 7, floor(rand() * 4), floor(rand() * 4)),
+    (8, 8, floor(rand() * 4), floor(rand() * 4)),
+    (8, 9, floor(rand() * 4), floor(rand() * 4)),
+    (8, 10, floor(rand() * 4), floor(rand() * 4)),
+    (8, 11, floor(rand() * 4), floor(rand() * 4)),
+    (8, 12, floor(rand() * 4), floor(rand() * 4)),
+    (8, 13, floor(rand() * 4), floor(rand() * 4)),
+    (8, 14, floor(rand() * 4), floor(rand() * 4)),
+    (8, 15, floor(rand() * 4), floor(rand() * 4)),
+    (8, 16, floor(rand() * 4), floor(rand() * 4)),
 
 
     -- Match 9
-    (9, 1, floor(random() * 4), floor(random() * 4)),
-    (9, 2, floor(random() * 4), floor(random() * 4)),
-    (9, 3, floor(random() * 4), floor(random() * 4)),
-    (9, 4, floor(random() * 4), floor(random() * 4)),
-    (9, 5, floor(random() * 100), floor(random() * 100)),
-    (9, 6, floor(random() * 100), floor(random() * 100)),
-    (9, 7, floor(random() * 4), floor(random() * 4)),
-    (9, 8, floor(random() * 4), floor(random() * 4)),
-    (9, 9, floor(random() * 4), floor(random() * 4)),
-    (9, 10, floor(random() * 4), floor(random() * 4)),
-    (9, 11, floor(random() * 4), floor(random() * 4)),
-    (9, 12, floor(random() * 4), floor(random() * 4)),
-    (9, 13, floor(random() * 4), floor(random() * 4)),
-    (9, 14, floor(random() * 4), floor(random() * 4)),
-    (9, 15, floor(random() * 4), floor(random() * 4)),
-    (9, 16, floor(random() * 4), floor(random() * 4)),
+    (9, 1, floor(rand() * 4), floor(rand() * 4)),
+    (9, 2, floor(rand() * 4), floor(rand() * 4)),
+    (9, 3, floor(rand() * 4), floor(rand() * 4)),
+    (9, 4, floor(rand() * 4), floor(rand() * 4)),
+    (9, 5, floor(rand() * 60), floor(rand() * 60)),
+    (9, 6, floor(rand() * 60), floor(rand() * 60)),
+    (9, 7, floor(rand() * 4), floor(rand() * 4)),
+    (9, 8, floor(rand() * 4), floor(rand() * 4)),
+    (9, 9, floor(rand() * 4), floor(rand() * 4)),
+    (9, 10, floor(rand() * 4), floor(rand() * 4)),
+    (9, 11, floor(rand() * 4), floor(rand() * 4)),
+    (9, 12, floor(rand() * 4), floor(rand() * 4)),
+    (9, 13, floor(rand() * 4), floor(rand() * 4)),
+    (9, 14, floor(rand() * 4), floor(rand() * 4)),
+    (9, 15, floor(rand() * 4), floor(rand() * 4)),
+    (9, 16, floor(rand() * 4), floor(rand() * 4)),
 
     -- Match 10
-    (10, 1, floor(random() * 4), floor(random() * 4)),
-    (10, 2, floor(random() * 4), floor(random() * 4)),
-    (10, 3, floor(random() * 4), floor(random() * 4)),
-    (10, 4, floor(random() * 4), floor(random() * 4)),
-    (10, 5, floor(random() * 100), floor(random() * 100)),
-    (10, 6, floor(random() * 100), floor(random() * 100)),
-    (10, 7, floor(random() * 4), floor(random() * 4)),
-    (10, 8, floor(random() * 4), floor(random() * 4)),
-    (10, 9, floor(random() * 4), floor(random() * 4)),
-    (10, 10, floor(random() * 4), floor(random() * 4)),
-    (10, 11, floor(random() * 4), floor(random() * 4)),
-    (10, 12, floor(random() * 4), floor(random() * 4)),
-    (10, 13, floor(random() * 4), floor(random() * 4)),
-    (10, 14, floor(random() * 4), floor(random() * 4)),
-    (10, 15, floor(random() * 4), floor(random() * 4)),
-    (10, 16, floor(random() * 4), floor(random() * 4)),
+    (10, 1, floor(rand() * 4), floor(rand() * 4)),
+    (10, 2, floor(rand() * 4), floor(rand() * 4)),
+    (10, 3, floor(rand() * 4), floor(rand() * 4)),
+    (10, 4, floor(rand() * 4), floor(rand() * 4)),
+    (10, 5, floor(rand() * 60), floor(rand() * 60)),
+    (10, 6, floor(rand() * 60), floor(rand() * 60)),
+    (10, 7, floor(rand() * 4), floor(rand() * 4)),
+    (10, 8, floor(rand() * 4), floor(rand() * 4)),
+    (10, 9, floor(rand() * 4), floor(rand() * 4)),
+    (10, 10, floor(rand() * 4), floor(rand() * 4)),
+    (10, 11, floor(rand() * 4), floor(rand() * 4)),
+    (10, 12, floor(rand() * 4), floor(rand() * 4)),
+    (10, 13, floor(rand() * 4), floor(rand() * 4)),
+    (10, 14, floor(rand() * 4), floor(rand() * 4)),
+    (10, 15, floor(rand() * 4), floor(rand() * 4)),
+    (10, 16, floor(rand() * 4), floor(rand() * 4)),
 
     -- Match 11
-    (11, 1, floor(random() * 4), floor(random() * 4)),
-    (11, 2, floor(random() * 4), floor(random() * 4)),
-    (11, 3, floor(random() * 4), floor(random() * 4)),
-    (11, 4, floor(random() * 4), floor(random() * 4)),
-    (11, 5, floor(random() * 100), floor(random() * 100)),
-    (11, 6, floor(random() * 100), floor(random() * 100)),
-    (11, 7, floor(random() * 4), floor(random() * 4)),
-    (11, 8, floor(random() * 4), floor(random() * 4)),
-    (11, 9, floor(random() * 4), floor(random() * 4)),
-    (11, 10, floor(random() * 4), floor(random() * 4)),
-    (11, 11, floor(random() * 4), floor(random() * 4)),
-    (11, 12, floor(random() * 4), floor(random() * 4)),
-    (11, 13, floor(random() * 4), floor(random() * 4)),
-    (11, 14, floor(random() * 4), floor(random() * 4)),
-    (11, 15, floor(random() * 4), floor(random() * 4)),
-    (11, 16, floor(random() * 4), floor(random() * 4)),
+    (11, 1, floor(rand() * 4), floor(rand() * 4)),
+    (11, 2, floor(rand() * 4), floor(rand() * 4)),
+    (11, 3, floor(rand() * 4), floor(rand() * 4)),
+    (11, 4, floor(rand() * 4), floor(rand() * 4)),
+    (11, 5, floor(rand() * 60), floor(rand() * 60)),
+    (11, 6, floor(rand() * 60), floor(rand() * 60)),
+    (11, 7, floor(rand() * 4), floor(rand() * 4)),
+    (11, 8, floor(rand() * 4), floor(rand() * 4)),
+    (11, 9, floor(rand() * 4), floor(rand() * 4)),
+    (11, 10, floor(rand() * 4), floor(rand() * 4)),
+    (11, 11, floor(rand() * 4), floor(rand() * 4)),
+    (11, 12, floor(rand() * 4), floor(rand() * 4)),
+    (11, 13, floor(rand() * 4), floor(rand() * 4)),
+    (11, 14, floor(rand() * 4), floor(rand() * 4)),
+    (11, 15, floor(rand() * 4), floor(rand() * 4)),
+    (11, 16, floor(rand() * 4), floor(rand() * 4)),
 
     -- Match 12
-    (12, 1, floor(random() * 4), floor(random() * 4)),
-    (12, 2, floor(random() * 4), floor(random() * 4)),
-    (12, 3, floor(random() * 4), floor(random() * 4)),
-    (12, 4, floor(random() * 4), floor(random() * 4)),
-    (12, 5, floor(random() * 100), floor(random() * 100)),
-    (12, 6, floor(random() * 100), floor(random() * 100)),
-    (12, 7, floor(random() * 4), floor(random() * 4)),
-    (12, 8, floor(random() * 4), floor(random() * 4)),
-    (12, 9, floor(random() * 4), floor(random() * 4)),
-    (12, 10, floor(random() * 4), floor(random() * 4)),
-    (12, 11, floor(random() * 4), floor(random() * 4)),
-    (12, 12, floor(random() * 4), floor(random() * 4)),
-    (12, 13, floor(random() * 4), floor(random() * 4)),
-    (12, 14, floor(random() * 4), floor(random() * 4)),
-    (12, 15, floor(random() * 4), floor(random() * 4)),
-    (12, 16, floor(random() * 4), floor(random() * 4));
+    (12, 1, floor(rand() * 4), floor(rand() * 4)),
+    (12, 2, floor(rand() * 4), floor(rand() * 4)),
+    (12, 3, floor(rand() * 4), floor(rand() * 4)),
+    (12, 4, floor(rand() * 4), floor(rand() * 4)),
+    (12, 5, floor(rand() * 60), floor(rand() * 60)),
+    (12, 6, floor(rand() * 60), floor(rand() * 60)),
+    (12, 7, floor(rand() * 4), floor(rand() * 4)),
+    (12, 8, floor(rand() * 4), floor(rand() * 4)),
+    (12, 9, floor(rand() * 4), floor(rand() * 4)),
+    (12, 10, floor(rand() * 4), floor(rand() * 4)),
+    (12, 11, floor(rand() * 4), floor(rand() * 4)),
+    (12, 12, floor(rand() * 4), floor(rand() * 4)),
+    (12, 13, floor(rand() * 4), floor(rand() * 4)),
+    (12, 14, floor(rand() * 4), floor(rand() * 4)),
+    (12, 15, floor(rand() * 4), floor(rand() * 4)),
+    (12, 16, floor(rand() * 4), floor(rand() * 4));
 
 -- ----------------------------------------------------------------------------------------------------------------
 
 -- select equipe, Compétition,	Buts,Tirs pm,jaune,rouge,Possession%,PassesRéussies%,AériensGagnés,	Note from 
 
 -- requete pour statistique
-
+combined
+where partie =
 CREATE view v_competitionmatchequipe as 
 SELECT
     match.id_match,
@@ -740,8 +809,7 @@ FROM (
   SELECT equipe1_nom AS equipe, id_match,partie,action,sum(pointEquipe1) as point,competition_nom FROM v_statistique GROUP BY id_match,equipe1_nom,partie,action,competition_nom
   UNION ALL
   SELECT equipe2_nom AS equipe, id_match,partie,action,sum(pointEquipe2) as point,competition_nom FROM v_statistique GROUP BY id_match,equipe2_nom,partie,action,competition_nom
-) AS matches_combined
-where partie = 10
+) AS matches_ 10
 GROUP BY equipe,partie,action,competition_nom order by sum(point) desc;
 
 -- ---------------------------------------------------------------
@@ -791,19 +859,60 @@ GROUP BY equipe, partie,id_match,action
 ORDER BY sum(points) DESC;
 
 -- ----------------------------- generale ------------------------------row.equipe, row.competition, row.buts, tirs, row.jaune, row.rouge, row.possession, row.passesReussies, row.aeriensGagnes, row.note)
-create or replace view v_statgenerale as
+-- create or replace view v_statgenerale as
+-- SELECT
+--   equipe,
+--   competition_nom competition,
+--   partie,
+--   sum(CASE WHEN action = 'Buts' THEN points END) AS buts,
+--   sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
+--   sum(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
+--   sum(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
+--   round(sum(CASE WHEN action = 'Possession%' THEN points  END)/count(DISTINCT id_match),2) AS possession,
+--   round(sum(CASE WHEN action = 'PassesRéussies%' THEN points END)/count(DISTINCT id_match),2)  AS passes_reussies,
+--   round(sum(CASE WHEN action = 'AériensGagnés' THEN points END)/count(DISTINCT id_match),2)  AS aeriens_gagnes,
+--   round(sum(points)/count(action),2) AS notes
+-- FROM (
+--   SELECT
+--     equipe1_nom AS equipe,
+--     id_match,
+--     competition_nom,
+--     partie,
+--     action,
+--     sum(pointEquipe1) AS points
+--   FROM v_statistique
+--   where partie = 10
+--   GROUP BY id_match, equipe1_nom, partie, action,competition_nom
+
+--   UNION ALL
+
+--   SELECT
+--     equipe2_nom AS equipe,
+--     id_match,
+--     competition_nom,
+--     partie,
+--     action,
+--     sum(pointEquipe2) AS points
+--   FROM v_statistique
+--   where partie = 10
+--   GROUP BY id_match, equipe2_nom, partie, action,competition_nom
+-- ) AS matches_combined
+-- GROUP BY equipe, partie,id_match,competition_nom
+-- ORDER BY sum(points) DESC;
+
+CREATE OR REPLACE VIEW v_statgenerale AS
 SELECT
   equipe,
-  competition_nom competition,
+  competition_nom AS competition,
   partie,
-  sum(CASE WHEN action = 'Buts' THEN points END) AS buts,
-  sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
-  sum(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
-  sum(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
-  round(sum(CASE WHEN action = 'Possession%' THEN points  END)/count(DISTINCT id_match),2) AS possession,
-  round(sum(CASE WHEN action = 'PassesRéussies%' THEN points END)/count(DISTINCT id_match),2)  AS passes_reussies,
-  round(sum(CASE WHEN action = 'AériensGagnés' THEN points END)/count(DISTINCT id_match),2)  AS aeriens_gagnes,
-  round(sum(points)/count(action),2) AS notes
+  SUM(CASE WHEN action = 'Buts' THEN points END) AS buts,
+  SUM(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
+  SUM(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
+  SUM(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
+  ROUND(SUM(CASE WHEN action = 'Possession%' THEN points END) / COUNT(DISTINCT id_match), 2) AS possession,
+  ROUND(SUM(CASE WHEN action = 'PassesRéussies%' THEN points END) / COUNT(DISTINCT id_match), 2) AS passes_reussies,
+  ROUND(SUM(CASE WHEN action = 'AériensGagnés' THEN points END) / COUNT(DISTINCT id_match), 2) AS aeriens_gagnes,
+  ROUND(SUM(points) / COUNT(action), 2) AS notes
 FROM (
   SELECT
     equipe1_nom AS equipe,
@@ -811,10 +920,10 @@ FROM (
     competition_nom,
     partie,
     action,
-    sum(pointEquipe1) AS points
+    SUM(pointEquipe1) AS points
   FROM v_statistique
-  where partie = 10
-  GROUP BY id_match, equipe1_nom, partie, action,competition_nom
+  WHERE partie = 10
+  GROUP BY id_match, equipe1_nom, partie, action, competition_nom
 
   UNION ALL
 
@@ -824,56 +933,56 @@ FROM (
     competition_nom,
     partie,
     action,
-    sum(pointEquipe2) AS points
+    SUM(pointEquipe2) AS points
   FROM v_statistique
-  where partie = 10
-  GROUP BY id_match, equipe2_nom, partie, action,competition_nom
+  WHERE partie = 10
+  GROUP BY id_match, equipe2_nom, partie, action, competition_nom
 ) AS matches_combined
-GROUP BY equipe, partie,id_match,competition_nom
-ORDER BY sum(points) DESC;
+GROUP BY equipe, partie, id_match, competition_nom
+ORDER BY SUM(points) DESC;
 
 
 --  stat defense --------------------------------------------------------
-create or replace view v_statgenerale as
-SELECT
-  equipe,
-  competition_nom competition,
-  partie,
-  sum(CASE WHEN action = 'Buts' THEN points END) AS buts,
-  sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
-  sum(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
-  sum(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
-  round(sum(CASE WHEN action = 'Possession%' THEN points  END)/count(DISTINCT id_match),2) AS possession,
-  round(sum(CASE WHEN action = 'PassesRéussies%' THEN points END)/count(DISTINCT id_match),2)  AS passes_reussies,
-  round(sum(CASE WHEN action = 'AériensGagnés' THEN points END)/count(DISTINCT id_match),2)  AS aeriens_gagnes,
-  round(sum(points)/count(action),2) AS notes
-FROM (
-  SELECT
-    equipe1_nom AS equipe,
-    id_match,
-    competition_nom,
-    partie,
-    action,
-    sum(pointEquipe1) AS points
-  FROM v_statistique
-  where partie = 10
-  GROUP BY id_match, equipe1_nom, partie, action,competition_nom
+-- create or replace view v_statgenerale as
+-- SELECT
+--   equipe,
+--   competition_nom competition,
+--   partie,
+--   sum(CASE WHEN action = 'Buts' THEN points END) AS buts,
+--   sum(CASE WHEN action = 'Tirs' THEN points END) AS tirs,
+--   sum(CASE WHEN action = 'Jaune' THEN points END) AS jaune,
+--   sum(CASE WHEN action = 'Rouge' THEN points END) AS rouge,
+--   round(sum(CASE WHEN action = 'Possession%' THEN points  END)/count(DISTINCT id_match),2) AS possession,
+--   round(sum(CASE WHEN action = 'PassesRéussies%' THEN points END)/count(DISTINCT id_match),2)  AS passes_reussies,
+--   round(sum(CASE WHEN action = 'AériensGagnés' THEN points END)/count(DISTINCT id_match),2)  AS aeriens_gagnes,
+--   round(sum(points)/count(action),2) AS notes
+-- FROM (
+--   SELECT
+--     equipe1_nom AS equipe,
+--     id_match,
+--     competition_nom,
+--     partie,
+--     action,
+--     sum(pointEquipe1) AS points
+--   FROM v_statistique
+--   where partie = 10
+--   GROUP BY id_match, equipe1_nom, partie, action,competition_nom
 
-  UNION ALL
+--   UNION ALL
 
-  SELECT
-    equipe2_nom AS equipe,
-    id_match,
-    competition_nom,
-    partie,
-    action,
-    sum(pointEquipe2) AS points
-  FROM v_statistique
-  where partie = 10
-  GROUP BY id_match, equipe2_nom, partie, action,competition_nom
-) AS matches_combined
-GROUP BY equipe, partie,id_match,competition_nom
-ORDER BY sum(points) DESC;
+--   SELECT
+--     equipe2_nom AS equipe,
+--     id_match,
+--     competition_nom,
+--     partie,
+--     action,
+--     sum(pointEquipe2) AS points
+--   FROM v_statistique
+--   where partie = 10
+--   GROUP BY id_match, equipe2_nom, partie, action,competition_nom
+-- ) AS matches_combined
+-- GROUP BY equipe, partie,id_match,competition_nom
+-- ORDER BY sum(points) DESC;
 
 
 -- -------------- stat defense -------------------
