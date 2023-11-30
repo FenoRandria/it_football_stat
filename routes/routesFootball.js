@@ -50,6 +50,15 @@ router.get('/statgenerales', async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la récupération des statGenerales.' });
   }
 });
+router.get('/stat-generales', async (req, res) => {
+  const statGenerale = new StatGenerale();
+  try {
+    const statGenerales = await statGenerale.getAll();
+    res.json(statGenerales);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur lors de la récupération des statGenerales.' });
+  }
+});
 
 router.get('/statdefenses', async (req, res) => {
   const statGenerale = new StatDefense();

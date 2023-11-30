@@ -17,8 +17,8 @@ class StatGenerale {
     
       async getAll() {
         try {
-          const result = await db.query('select * from statgenerale');
-          const joueurs = result.rows.map((row) => new StatGenerale(row.equipe, row.competition, row.buts, tirs, row.jaune, row.rouge, row.possession, row.passesReussies, row.aeriensGagnes, row.note));
+          const result = await db.query('select * from v_statgenerale');
+          const joueurs = result.rows.map((row) => new StatGenerale(row.equipe, row.competition, row.buts, row.tirs, row.jaune, row.rouge, row.possession, row.passes_reussies, row.aeriens_gagnes, row.notes));
           return joueurs;
         } catch (error) {
           console.error('Erreur lors de la récupération des statgenerale :', error);

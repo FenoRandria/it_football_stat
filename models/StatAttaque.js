@@ -14,7 +14,7 @@ class StatAttaque {
     
     async getAll() {
         try {
-            const result = await db.query('select * from statattaque');
+            const result = await db.query('select * from v_statattaque');
             const joueurs = result.rows.map((row) => new StatAttaque(row.equipe,row.competition,row.tirs, row.tirsca, row.dribbles, row.fautes,row.note));
             return joueurs;
         } catch (error) {
