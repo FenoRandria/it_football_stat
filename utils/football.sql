@@ -98,7 +98,6 @@ create table joueur(
     nom varchar(255) not null,
     dtn date,
     bonpied int, -- pied gauche 0 et pied droit 1
-    bonpied int, -- pied gauche 0 et pied droit 1
     paysdorigine varchar(255),
     corbeil int default 0
 );
