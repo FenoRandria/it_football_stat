@@ -21,7 +21,8 @@ router.get('/all', async (req, res) => {
     const etudiants = {
         "id":"1",
         "nom":"feno",
-        "dtn":"2022-12-23"
+        "dtn":"2022-12-23",
+        "adress":"vb ooo000"
     }
     res.json(etudiants);
   } catch (error) {
